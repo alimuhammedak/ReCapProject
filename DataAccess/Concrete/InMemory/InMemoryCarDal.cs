@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccess.Abstract;
@@ -11,7 +13,6 @@ namespace DataAccess.Concrete.InMemory
     public class InMemoryCarDal : ICarDal
     {
         List<Car> _cars;
-
         public InMemoryCarDal()
         {
             _cars = new List<Car>
@@ -23,37 +24,14 @@ namespace DataAccess.Concrete.InMemory
                 new Car{CarId=5, BrandId=3, ColorId=5, ModelYear=2019, DailyPrice=350, Description="Mercedes C180"},
             };
         }
-        public void Add(Car car)
+
+        public void AddRange(IEnumerable<Car> entities)
         {
-            _cars.Add(car);
+            throw new NotImplementedException();
         }
 
-        public void Delete(Car car)
-        {
-            _cars.Where(c => c.CarId == car.CarId).ToList().ForEach(c => _cars.Remove(c));
-
-        }
-
-        public void DeleteRange(List<Car> cars)
-        {
-           _cars.Where(c => cars.Any(c1 => c1.CarId == c.CarId)).ToList().ForEach(c => _cars.Remove(c));
-        }
-
-        public List<Car> GetAll()
-        {
-            return _cars.ToList();
-        }
-
-        public List<Car> GetById(int carId)
-        {
-            return _cars.Where(c => c.CarId == carId).ToList();
-        }
-
-        public List<Car> GetByName(string carName)
-        {
-            return _cars.Where(c => c.Description.ToLower().Contains(carName.ToLower())).ToList();
-        }
-
+        void IEntityRepository<Car>.Add(Car entity) => _cars.Add(entity);
+        void IEntityRepository<Car>.Delete(Car car) => _cars.Where(c => c.CarId == car.CarId).ToList().ForEach(c => _cars.Remove(c));
         public void Update(Car car)
         {
             Car? carToUpdate = _cars.SingleOrDefault(c => c.CarId == car.CarId);
@@ -66,5 +44,14 @@ namespace DataAccess.Concrete.InMemory
                 carToUpdate.Description = car.Description;
             }
         }
+        public IEnumerable<Car> GetAll(Expression<Func<Car, bool>>? filter = null)
+        {
+            throw new NotImplementedException();
+        }
+        public Car Get(Expression<Func<Car, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace Entities.Concrete
 {
-    internal class Brand : IEntity
+    public class Brand : IEntity
     {
         public int BrandId { get; set; }
-        public required string BrandName { get; set; }
+        public required string Name { get; set; }
         
     }
 }

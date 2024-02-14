@@ -15,3 +15,4 @@ C:\Users\aliak\OneDrive\Repos\C#\LayeredApplication\ReCapProject\Business\obj\De
 C:\Users\aliak\OneDrive\Repos\C#\LayeredApplication\ReCapProject\Business\obj\Debug\net8.0\refint\Business.dll
 C:\Users\aliak\OneDrive\Repos\C#\LayeredApplication\ReCapProject\Business\obj\Debug\net8.0\Business.pdb
 C:\Users\aliak\OneDrive\Repos\C#\LayeredApplication\ReCapProject\Business\obj\Debug\net8.0\ref\Business.dll
+C:\Users\aliak\OneDrive\Repos\C#\LayeredApplication\ReCapProject\Business\obj\Debug\net8.0\Business.sourcelink.json
