@@ -1,7 +1,4 @@
-using Entities.Abstract;
-using Entities.Concrete;
-
-interface IEntityRepository<T> 
+interface IEntityRepository<T>
 {
     Task<IEnumerable<T>> GetAllAsync();
     T GetCarById(int id);

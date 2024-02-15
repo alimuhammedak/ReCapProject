@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccess.Abstract;
-using Entities.Abstract;
+﻿using DataAccess.Abstract;
 using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -51,7 +45,7 @@ namespace DataAccess.Concrete.EntityFramework
                 query = query.Where(filter);
             }
 
-            return  await query.ToListAsync();
+            return await query.ToListAsync();
         }
 
         public void Update(Car entity)

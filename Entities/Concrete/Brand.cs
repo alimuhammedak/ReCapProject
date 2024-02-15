@@ -1,6 +1,4 @@
 ﻿using Entities.Abstract;
-using System;
-using System.Linq;
 
 namespace Entities.Concrete
 {
@@ -8,6 +6,6 @@ namespace Entities.Concrete
     {
         public int BrandId { get; set; }
         public required string Name { get; set; }
-        
+
     }
 }

@@ -1,6 +1,4 @@
 ﻿using DataAccess.Concrete.EntityFramework;
-using DataAccess.Concrete.InMemory;
-using Entities.Concrete;
 
 CarManager _carManager = new CarManager(new EfCarDal());
 

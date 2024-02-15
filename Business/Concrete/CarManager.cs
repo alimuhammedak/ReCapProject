@@ -1,6 +1,6 @@
-using System.Diagnostics;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using System.Diagnostics;
 
 public class CarManager : ICarService
 {
