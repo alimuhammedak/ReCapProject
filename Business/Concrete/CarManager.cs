@@ -39,13 +39,17 @@ public class CarManager : ICarService
 
     public void Delete(Car car) => _carDal?.Delete(car);
 
-    public IEnumerable<Car> GetAll() => _carDal.GetAll();
+    public async Task<IEnumerable<Car>> GetAllAsync()
+    {
+        var test = await _carDal.GetAllAsync();
+        return test;
+    }
 
     public void Update(Car car) => _carDal?.Update(car);
 
     public Car GetCarById(int id)
     {
-       return _carDal.Get( car => car.CarId == id);
+        return _carDal.Get(car => car.CarId == id);
     }
 
     public Car GetCarByDescription(string description)

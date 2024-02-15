@@ -3,7 +3,7 @@ using Entities.Concrete;
 
 interface IEntityRepository<T> 
 {
-    IEnumerable<T> GetAll();
+    Task<IEnumerable<T>> GetAllAsync();
     T GetCarById(int id);
     void AddRange(IEnumerable<T> entites);
     void Add(T entity);

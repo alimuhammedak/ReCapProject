@@ -39,13 +39,19 @@ namespace DataAccess.Concrete.EntityFramework
             return context.Car.SingleOrDefault(filter) ?? new Car() { Description = "zorunlu doldurulması gereken property" };
         }
 
-        public IEnumerable<Car> GetAll(Expression<Func<Car, bool>>? filter = null)
+
+        public async Task<IEnumerable<Car>> GetAllAsync(Expression<Func<Car, bool>>? filter = null)
         {
             using var context = new ReCapContext();
-            return filter is null 
-                ? context.Car 
-                : context.Car.Where(filter);
 
+            IQueryable<Car> query = context.Car;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            return  await query.ToListAsync();
         }
 
         public void Update(Car entity)

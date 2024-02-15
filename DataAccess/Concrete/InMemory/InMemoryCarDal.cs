@@ -53,5 +53,9 @@ namespace DataAccess.Concrete.InMemory
             throw new NotImplementedException();
         }
 
+        public Task<IEnumerable<Car>> GetAllAsync(Expression<Func<Car, bool>>? filter = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
