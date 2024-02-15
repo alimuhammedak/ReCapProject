@@ -1,4 +1,4 @@
-interface IEntityRepository<T>
+public interface IEntityRepository<T>
 {
     Task<IEnumerable<T>> GetAllAsync();
     T GetCarById(int id);

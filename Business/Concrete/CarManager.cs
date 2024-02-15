@@ -17,8 +17,13 @@ public class CarManager : ICarService
 
     public void Add(Car car)
     {
-        if (car.ModelYear > 2005
-            && car.DailyPrice < 100.000m)
+        if (car.Description.Length <= 2)
+            Console.WriteLine("Araba Açýklamasý 2 karakterden uzun olamý");
+        else if (car.DailyPrice <= 0)
+        {
+            Console.WriteLine("Arabanýn günlük fiyatý 0'dan büyük olmalý");
+        }
+        else
         {
             try
             {
@@ -30,18 +35,12 @@ public class CarManager : ICarService
                 throw new Exception(exception.Message);
             }
         }
-        else
-        {
-            Console.WriteLine("Ýþlem baþarýsýz. Lütfen tekrar deneyiniz");
-        }
-
     }
-
     public void Delete(Car car) => _carDal?.Delete(car);
 
     public async Task<IEnumerable<Car>> GetAllAsync()
     {
-        var test = await _carDal.GetAllAsync();
+        var test = await _carDal?.GetAllAsync()!;
         return test;
     }
 
@@ -49,7 +48,12 @@ public class CarManager : ICarService
 
     public Car GetCarById(int id)
     {
-        return _carDal.Get(car => car.CarId == id);
+        return _carDal?.Get(car => car.CarId == id) ?? throw new InvalidOperationException
+        {
+            HelpLink = String.Empty ,
+            HResult = 0,
+            Source = null
+        };
     }
 
     public Car GetCarByDescription(string description)
