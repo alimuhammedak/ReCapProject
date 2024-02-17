@@ -1,6 +1,6 @@
 using Entities.Concrete;
 
-interface ICarService : IEntityRepository<Car>
+internal interface ICarService
 {
     Car GetCarByDescription(string description);
 }
