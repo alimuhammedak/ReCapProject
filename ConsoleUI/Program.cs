@@ -12,5 +12,5 @@ var _carManager = new CarManager(new EfCarDal());
 //    ModelYear = 11
 //});
 
-_carManager.GetAllAsync().Result.ToList().ForEach(c => Console.WriteLine(c.Description));
+//_carManager.GetAllAsync().Result.ToList().ForEach(c => Console.WriteLine(c.Description));
 _carManager.GetCarDetails().Result.ToList().ForEach(c => Console.WriteLine($"CarID: {c.CarId,-10} \tCarName: {c.CarName,-32} \tBrandName: {c.BrandName,-15} \tColorName: {c.ColorName}"));
