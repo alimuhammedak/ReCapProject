@@ -1,6 +1,10 @@
 using Entities.Concrete;
+using Entities.DTOs;
 
-interface ICarService : IEntityRepository<Car>
+internal interface ICarService
 {
     Car GetCarByDescription(string description);
+
+    Task<IEnumerable<CarDetailDTOs>> GetCarDetails();
+    IEnumerable<CarDetailDTOs> GetCarDetailsByDescription(string description);
 }

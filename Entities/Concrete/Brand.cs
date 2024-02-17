@@ -1,11 +1,9 @@
-﻿using Entities.Abstract;
+﻿using Core.Entities;
 
-namespace Entities.Concrete
+namespace Entities.Concrete;
+
+public class Brand : IEntity
 {
-    public class Brand : IEntity
-    {
-        public int BrandId { get; set; }
-        public required string Name { get; set; }
-
-    }
+    public int BrandId { get; set; }
+    public string Name { get; set; }
 }

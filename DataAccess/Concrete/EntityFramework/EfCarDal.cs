@@ -1,56 +1,22 @@
-﻿using DataAccess.Abstract;
+﻿using Core.DataAccess.EntityFramework;
+using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+namespace DataAccess.Concrete.EntityFramework;
 
-namespace DataAccess.Concrete.EntityFramework
+public class EfCarDal : EfEntityRepositoryBase<Car, ReCapContext>, ICarDal
 {
-    public class EfCarDal : ICarDal
+    public async Task<IEnumerable<CarDetailDTOs>> GetCarDitails()
     {
-        public void Add(Car entity)
+        using var context = new ReCapContext();
+        var result = context.Car.Select(car => new CarDetailDTOs
         {
-            using var context = new ReCapContext();
-            var addedEntry = context.Entry(entity);
-            addedEntry.State = EntityState.Added;
-            context.SaveChanges();
-        }
-
-        public void AddRange(IEnumerable<Car> entities)
-        {
-            using var context = new ReCapContext();
-            context.Car.AddRange(entities);
-            context.SaveChanges();
-        }
-
-        public void Delete(Car entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Car Get(Expression<Func<Car, bool>> filter)
-        {
-            using var context = new ReCapContext();
-            return context.Car.SingleOrDefault(filter) ?? new Car() { Description = "zorunlu doldurulması gereken property" };
-        }
-
-
-        public async Task<IEnumerable<Car>> GetAllAsync(Expression<Func<Car, bool>>? filter = null)
-        {
-            using var context = new ReCapContext();
-
-            IQueryable<Car> query = context.Car;
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            return await query.ToListAsync();
-        }
-
-        public void Update(Car entity)
-        {
-            throw new NotImplementedException();
-        }
+            CarId = car.CarId,
+            CarName = car.Description,
+            BrandName = context.Brand.SingleOrDefault(brand => brand.BrandId == car.BrandId).Name,
+            ColorName = context.Color.SingleOrDefault(color => color.ColorId == car.ColorId).Name
+        });
+        return await result.ToListAsync();
     }
 }
