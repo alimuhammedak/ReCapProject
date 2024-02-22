@@ -3,6 +3,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
 using System.Linq.Expressions;
+using Core.Utilities.Result;
 
 namespace DataAccess.Concrete.InMemory;
 
@@ -30,7 +31,7 @@ public class InMemoryCarDal : ICarDal
         throw new NotImplementedException();
     }
 
-    void IEntityRepository<Car>.Add(Car entity)
+    IResult IEntityRepository<Car>.Add(Car entity)
     {
         _cars.Add(entity);
     }

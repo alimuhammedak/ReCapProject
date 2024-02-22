@@ -1,4 +1,5 @@
-﻿using DataAccess.Concrete.EntityFramework;
+﻿using Business.Concrete;
+using DataAccess.Concrete.EntityFramework;
 
 var _carManager = new CarManager(new EfCarDal());
 

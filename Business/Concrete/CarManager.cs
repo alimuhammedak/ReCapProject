@@ -1,7 +1,12 @@
+using System.Diagnostics;
+using Business.Abstract;
+using Business.Constant;
+using Core.Utilities.Result;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
-using System.Diagnostics;
+
+namespace Business.Concrete;
 
 public class CarManager : ICarService
 {
@@ -15,74 +20,100 @@ public class CarManager : ICarService
         _carDal = carRepository ?? throw new ArgumentNullException(nameof(carRepository));
     }
 
-    public void Add(Car car)
+    /// <inheritdoc />
+    public IResult Add(Car car)
     {
         if (car.Description.Length <= 2)
-            Console.WriteLine("Araba Açýklamasý 2 karakterden uzun olamý");
-        else if (car.DailyPrice <= 0)
-            Console.WriteLine("Arabanýn günlük fiyatý 0'dan büyük olmalý");
-        else
-            try
-            {
-                _carDal?.Add(car);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
-                throw new Exception(exception.Message);
-            }
+            return new ErrorResult(Messages.DescriptionLengthError);
+        if (car.DailyPrice <= 0)
+            return new ErrorResult(Messages.HigherThanMaximumPrice);
+
+        try
+        {
+            _carDal?.Add(car);
+            return new SuccessResult(Messages.CarAdded);
+        }
+        catch (Exception exception)
+        {
+            throw new Exception(exception.Message);
+        }
     }
 
-    public void Delete(Car car)
+    public IResult Delete(Car car)
     {
         _carDal?.Delete(car);
+        return new SuccessResult(Messages.CarDeleted);
     }
 
-    public async Task<IEnumerable<Car>> GetAllAsync()
-    {
-        var test = await _carDal?.GetAllAsync()!;
-        return test;
-    }
-
-    public void Update(Car car)
+    public IResult Update(Car car)
     {
         _carDal?.Update(car);
+        return new SuccessResult(Messages.Updated);
     }
 
-    public Car GetCarById(int id)
+    public IDataResult<Car> GetCarById(int id)
     {
-        return _carDal?.Get(car => car.CarId == id) ?? throw new InvalidOperationException
+        if (_carDal?.Get(car => car.CarId == id) is null)
         {
-            HelpLink = string.Empty,
-            HResult = 0,
-            Source = null
-        };
+            return new ErrorDataResult<Car>(Messages.Null);
+        }
+        return new SuccessDataResult<Car>(_carDal?.Get(car => car.CarId == id), Messages.CarsListed);
     }
 
-    public Car GetCarByDescription(string description)
+    public IDataResult<Car> GetCarByDescription(string description)
     {
         if (string.IsNullOrWhiteSpace(description))
-            throw new ArgumentException("Açýklama boþ olamaz.", nameof(description));
+            return new ErrorDataResult<Car>(Messages.Null);
 
         Debug.Assert(_carDal != null, nameof(_carDal) + " != null");
         var car = _carDal.Get(car => car.Description == description);
 
-        if (car == null) throw new Exception($"Açýklamasý '{description}' olan araba bulunamadý.");
+        if (car is null) return new ErrorDataResult<Car>($"Açýklamasý '{description}' olan araba bulunamadý.");
 
-        return car;
+        return new SuccessDataResult<Car>(car);
     }
 
-    public void AddRange(IEnumerable<Car> entites)
+    public async Task<IDataResult<IEnumerable<CarDetailDTOs>>> GetCarDetailsByDescription(string description)
     {
-        _carDal?.AddRange(entites);
+        try
+        {
+            var result = await _carDal.GetCarDitailsAsync(cd => cd.CarName.ToUpper() == description.ToUpper());
+            return new SuccessDataResult<IEnumerable<CarDetailDTOs>>(result);
+        }
+        catch (Exception ex)
+        {
+            // Hata durumunda daha kapsamlý bir hata yönetimi saðlayabilirsiniz.
+            // Örneðin, loglama yapabilirsiniz.
+            // Ayrýca, Exception'ý sadece hata iletisiyle deðil, tamamýyla dönmeniz daha iyidir.
+            return new ErrorDataResult<IEnumerable<CarDetailDTOs>>(
+                message: "Bir hata oluþtu. Detaylar için loglarý kontrol edin.");
+        }
+    }
+    public async Task<IDataResult<IEnumerable<CarDetailDTOs>>> GetCarDetailsAsync()
+    {
+        try
+        {
+            var result = await _carDal.GetCarDitailsAsync();
+            return new SuccessDataResult<IEnumerable<CarDetailDTOs>>(result);
+        }
+        catch (Exception ex)
+        {
+            return new ErrorDataResult<IEnumerable<CarDetailDTOs>>(
+                message: Messages.ExMessage);
+        }
     }
 
-    public async Task<IEnumerable<CarDetailDTOs>> GetCarDetails()
+    public async Task<IDataResult<IEnumerable<Car>>> GetAllAsync()
     {
-        return await _carDal.GetCarDitails();
-    }
-    public IEnumerable<CarDetailDTOs> GetCarDetailsByDescription(string description)
-    {
-        throw new NotImplementedException();
+        try
+        {
+            var result = await _carDal.GetAllAsync();
+            return new SuccessDataResult<IEnumerable<Car>>(result);
+        }
+        catch (Exception ex)
+        {
+            return new ErrorDataResult<IEnumerable<Car>>(
+                message: Messages.ExMessage);
+        }
     }
 }

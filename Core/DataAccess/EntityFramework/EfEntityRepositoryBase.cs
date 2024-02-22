@@ -1,6 +1,8 @@
 ﻿using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using Core.Utilities.Result;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Core.DataAccess.EntityFramework;
 
@@ -25,7 +27,10 @@ public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEnti
 
     public void Delete(TEntity entity)
     {
-        throw new NotImplementedException();
+        using var context = new TContext();
+        var addedEntry = context.Entry(entity);
+        addedEntry.State = EntityState.Deleted;
+        context.SaveChanges();
     }
 
     public TEntity Get(Expression<Func<TEntity, bool>> filter)
@@ -46,8 +51,19 @@ public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEnti
         return await query.ToListAsync();
     }
 
+    public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>>? filter = null)
+    {
+        using var context = new TContext();
+        IQueryable<TEntity> query = context.Set<TEntity>();
+        if (filter != null) query = query.Where(filter);
+        return await query.SingleAsync();
+    }
+
     public void Update(TEntity entity)
     {
-        throw new NotImplementedException();
+        using var context = new TContext();
+        var addedEntry = context.Entry(entity);
+        addedEntry.State = EntityState.Modified;
+        context.SaveChanges();
     }
 }
