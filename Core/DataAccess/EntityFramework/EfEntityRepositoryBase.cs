@@ -1,8 +1,6 @@
 ﻿using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using Core.Utilities.Result;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Core.DataAccess.EntityFramework;
 
@@ -39,6 +37,16 @@ public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEnti
         return context.Set<TEntity>().SingleOrDefault(filter) ?? new TEntity();
     }
 
+    public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>>? filter = null)
+    {
+        using var context = new TContext();
+
+        IQueryable<TEntity> query = context.Set<TEntity>();
+
+        if (filter != null) query = query.Where(filter);
+
+        return query.ToList();
+    }
 
     public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? filter = null)
     {

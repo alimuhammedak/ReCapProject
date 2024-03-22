@@ -1,17 +1,14 @@
 ﻿using Business.Concrete;
 using DataAccess.Concrete.EntityFramework;
+using Entities.Concrete;
 
-var _carManager = new CarManager(new EfCarDal());
-
-//using var context = new ReCapContext();
-//_carManager.Add(new Car
-//{
-//    BrandId = 1,
-//    ColorId = 1,
-//    DailyPrice = 1,
-//    Description = "222",
-//    ModelYear = 11
-//});
 
 //_carManager.GetAllAsync().Result.ToList().ForEach(c => Console.WriteLine(c.Description));
-_carManager.GetCarDetails().Result.ToList().ForEach(c => Console.WriteLine($"CarID: {c.CarId,-10} \tCarName: {c.CarName,-32} \tBrandName: {c.BrandName,-15} \tColorName: {c.ColorName}"));
+//_carManager.GetCarDetailsAsync().Result.Data.ToList().ForEach(c => Console.WriteLine($"CarID: {c.CarId,-10} \tCarName: {c.CarName,-32} \tBrandName: {c.BrandName,-15} \tColorName: {c.ColorName}"));
+
+//rentalManger.GetRentalDetailsAsync().Result.Data.ToList().ForEach(os => Console.Write($"ReantalID: {os.RentalId,-10} \tCarName: {os.CarName,-32} \tCustomer FullName: {os.CustomerFullName,-15}"));
+
+
+
+
+

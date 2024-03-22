@@ -3,7 +3,6 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
 using System.Linq.Expressions;
-using Core.Utilities.Result;
 
 namespace DataAccess.Concrete.InMemory;
 
@@ -26,19 +25,34 @@ public class InMemoryCarDal : ICarDal
         };
     }
 
+    public Task<Car> GetAsync(Expression<Func<Car, bool>>? filter = null)
+    {
+        throw new NotImplementedException();
+    }
+
     public void AddRange(IEnumerable<Car> entities)
     {
         throw new NotImplementedException();
     }
 
-    IResult IEntityRepository<Car>.Add(Car entity)
+    public void Add(Car entity)
     {
-        _cars.Add(entity);
+        throw new NotImplementedException();
     }
+
+    //IResult IEntityRepository<Car>.Add(Car entity)
+    //{
+    //    _cars.Add(entity);
+    //}
 
     void IEntityRepository<Car>.Delete(Car car)
     {
         _cars.Where(c => c.CarId == car.CarId).ToList().ForEach(c => _cars.Remove(c));
+    }
+
+    public Task<IEnumerable<CarDetailDTOs>> GetCarDitailsAsync(Expression<Func<CarDetailDTOs, bool>>? filter = null)
+    {
+        throw new NotImplementedException();
     }
 
     public Task<IEnumerable<CarDetailDTOs>> GetCarDitails()

@@ -53,11 +53,12 @@ public class CarManager : ICarService
 
     public IDataResult<Car> GetCarById(int id)
     {
-        if (_carDal?.Get(car => car.CarId == id) is null)
+        var result = _carDal?.Get(car => car.CarId == id);
+        if (result is null)
         {
-            return new ErrorDataResult<Car>(Messages.Null);
+            return new ErrorDataResult<Car>(result,Messages.Null);
         }
-        return new SuccessDataResult<Car>(_carDal?.Get(car => car.CarId == id), Messages.CarsListed);
+        return new SuccessDataResult<Car>(result, Messages.CarsListed);
     }
 
     public IDataResult<Car> GetCarByDescription(string description)

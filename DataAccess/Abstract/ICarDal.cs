@@ -1,5 +1,4 @@
 ﻿using Core.DataAccess;
-using Core.Utilities.Result;
 using Entities.Concrete;
 using Entities.DTOs;
 using System.Linq.Expressions;

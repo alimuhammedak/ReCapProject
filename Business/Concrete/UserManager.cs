@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Business.Abstract;
+﻿using Business.Abstract;
 using Business.Constant;
 using Core.Utilities.Result;
 using DataAccess.Abstract;
@@ -34,7 +29,8 @@ namespace Business.Concrete
 
         public IResult Delete(User user)
         {
-            throw new NotImplementedException();
+            _userDal.Delete(user);
+            return new SuccessResult(Messages.UserDeleted);
         }
 
         public async Task<IDataResult<IEnumerable<User>>> GetAllAsync()
@@ -44,12 +40,13 @@ namespace Business.Concrete
 
         public async Task<IDataResult<User>> GetByIdAsync(int id)
         {
-            return new SuccessDataResult<User>(await _userDal.GetAsync(user => user.Id == id));
+            return new SuccessDataResult<User>(await _userDal.GetAsync(user => user.userId == id));
         }
 
         public IResult Update(User user)
         {
-            throw new NotImplementedException();
+            _userDal.Update(user);
+            return new SuccessResult(Messages.UserUpdated);
         }
     }
 }

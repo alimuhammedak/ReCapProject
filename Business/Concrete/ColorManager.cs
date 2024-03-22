@@ -1,31 +1,31 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Result;
+using DataAccess.Abstract;
 using Entities.Concrete;
 
 namespace Business.Concrete;
 
 public class ColorManager : IColorSevice
 {
-    public void Add(Color entity)
+    public IColorDal _colorDal;
+
+    public ColorManager(IColorDal colorDal)
+    {
+        _colorDal = colorDal;
+    }
+
+    public IResult Add(Color entity)
+    {
+        _colorDal.Add(entity);
+        return new SuccessResult();
+    }
+
+    public IResult Delete(Color entity)
     {
         throw new NotImplementedException();
     }
 
-    public void AddRange(IEnumerable<Color> entites)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Delete(Color entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IEnumerable<Color>> GetAllAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Color GetCarById(int id)
+    public Task<IDataResult<IEnumerable<Color>>> GetAllAsync()
     {
         throw new NotImplementedException();
     }
@@ -35,7 +35,7 @@ public class ColorManager : IColorSevice
         throw new NotImplementedException();
     }
 
-    public void Update(Color entity)
+    public IResult Update(Color entity)
     {
         throw new NotImplementedException();
     }
